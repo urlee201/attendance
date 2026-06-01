@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>S&I 신임리더 팀빌딩 PI워크숍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#0e0d0c; --ink2:#4a4845; --ink3:#9a9895;
+  --paper:#faf9f6; --paper2:#f0efe9; --paper3:#e5e3db;
+  --line:rgba(14,13,12,0.09); --line2:rgba(14,13,12,0.18);
+  --green:#2e6b1a; --green-light:#e8f4e1; --green-bdr:#9fcc80;
+  --red:#991f1f; --red-light:#fdf0f0; --red-bdr:#e8a5a5;
+  --amber:#7a4a0d; --amber-light:#fdf4e3; --amber-bdr:#e8c478;
+  --blue:#1a3d6b; --blue-light:#edf4fd; --blue-bdr:#8ab5e8;
+  --purple:#4a1a8c; --purple-light:#f0eafd; --purple-bdr:#c4a8f0;
+  --accent:#1a5c38; --accent2:#0e3d26;
+  --r:8px; --r2:12px;
+  --shadow:0 1px 2px rgba(14,13,12,.06),0 3px 12px rgba(14,13,12,.08);
+  --shadow2:0 2px 4px rgba(14,13,12,.08),0 8px 28px rgba(14,13,12,.12);
+}
+html,body{height:100%;font-family:'Noto Sans KR',sans-serif;font-size:14px;line-height:1.5;}
+body{background:var(--paper);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+
+/* Header */
+header{background:var(--accent);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;box-shadow:0 2px 12px rgba(0,0,0,.18);}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;}
+.logo-mark{width:30px;height:30px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.logo-text{font-weight:800;font-size:15px;letter-spacing:-.01em;line-height:1.2;}
+.hnav{display:flex;gap:2px;}
+.hn{padding:7px 15px;border-radius:7px;border:none;background:transparent;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .14s;font-family:inherit;white-space:nowrap;}
+.hn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.hn:hover{background:rgba(255,255,255,.12);color:#fff;}
+.hn.active{background:rgba(255,255,255,.22);color:#fff;}
+
+/* Layout */
+main{flex:1;padding:28px 20px;max-width:1000px;width:100%;margin:0 auto;}
+.page{display:none;}
+.page.active{display:block;animation:pIn .2s ease;}
+@keyframes pIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.ptitle{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:3px;}
+.psub{font-size:13px;color:var(--ink2);margin-bottom:22px;}
+
+/* Card */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.clabel{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
+
+/* Date strip */
+.dstrip{background:var(--accent);color:#fff;border-radius:var(--r2);padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);}
+.dstrip .dtxt{font-size:16px;font-weight:700;}
+.dstrip .dtm{font-family:'DM Mono',monospace;font-size:14px;opacity:.8;}
+
+/* 교육명 배너 (크게) */
+.event-banner{
+  background:linear-gradient(135deg,#1a5c38 0%,#0e3d26 100%);
+  color:#fff;
+  border-radius:var(--r2);
+  padding:22px 24px;
+  margin-bottom:22px;
+  box-shadow:var(--shadow2);
+  text-align:center;
+}
+.event-banner .ev-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.65;margin-bottom:8px;}
+.event-banner .ev-title{font-size:24px;font-weight:900;letter-spacing:-.02em;line-height:1.3;}
+
+/* Progress */
+.prog-section{margin-bottom:22px;}
+.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.prog-card{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:16px 18px;box-shadow:var(--shadow);}
+.prog-card-title{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.prog-card-title .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-in{background:var(--green);}
+.dot-out{background:var(--purple);}
+.prog-top{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-bottom:6px;}
+.prog-track{height:6px;background:var(--paper3);border-radius:3px;overflow:hidden;}
+.prog-fill-in{height:100%;background:var(--green);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.prog-fill-out{height:100%;background:var(--purple);border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+
+/* Alert */
+.alert{display:none;align-items:center;gap:9px;padding:11px 15px;border-radius:var(--r);font-size:13px;font-weight:500;margin-bottom:14px;}
+.alert svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.alert.show{display:flex;animation:sD .18s ease;}
+@keyframes sD{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.a-ok{background:var(--green-light);color:var(--green);border:1px solid var(--green-bdr);}
+.a-ng{background:var(--red-light);color:var(--red);border:1px solid var(--red-bdr);}
+.a-info{background:var(--blue-light);color:var(--blue);border:1px solid var(--blue-bdr);}
+
+/* Filter */
+.fbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
+.finp{height:36px;padding:0 10px;border:1px solid var(--line2);border-radius:var(--r);background:#fff;color:var(--ink);font-size:13px;font-family:inherit;outline:none;transition:border-color .14s;}
+.finp:focus{border-color:var(--accent);}
+select.finp{padding-right:28px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%234a4845' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;min-width:100px;}
+
+/* ── 출석 명단 (가로 1줄, 입실+퇴실 2열) ── */
+/* 컬럼: No. | 총괄 | 팀 | 소속 | 성명 | 입실 버튼/시간 | 퇴실 버튼/시간 */
+.mlist{display:flex;flex-direction:column;gap:5px;}
+.mlist-hdr,.mrow{
+  display:grid;
+  grid-template-columns:44px 1fr 1fr 1fr 100px 140px 140px;
+  gap:0;
+  align-items:center;
+  padding:10px 14px;
+  border-radius:var(--r);
+}
+.mlist-hdr{
+  background:var(--paper2);border:1px solid var(--line);
+  font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);
+  margin-bottom:2px;
+}
+.mrow{
+  background:#fff;border:1px solid var(--line);transition:all .13s;
+}
+.mrow:hover{border-color:var(--line2);box-shadow:var(--shadow);}
+/* 입실 완료 */
+.mrow.in-done{background:#f4fbf0;}
+/* 입실+퇴실 완료 */
+.mrow.all-done{background:var(--green-light);border-color:var(--green-bdr);}
+.mrow.all-done .mcell.mname{color:var(--green);font-weight:700;}
+
+.mcell{font-size:13px;color:var(--ink);padding-right:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mcell.num{font-family:'DM Mono',monospace;font-size:12px;color:var(--ink3);}
+.mcell.mname{font-weight:600;}
+.mcell.act{display:flex;flex-direction:column;align-items:flex-start;gap:3px;}
+
+/* 입실/퇴실 셀 내부 */
+.check-cell{display:flex;align-items:center;gap:6px;}
+.check-time-in{font-family:'DM Mono',monospace;font-size:11px;color:var(--green);font-weight:600;white-space:nowrap;}
+.check-time-out{font-family:'DM Mono',monospace;font-size:11px;color:var(--purple);font-weight:600;white-space:nowrap;}
+
+/* Stats */
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.scard{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:16px;text-align:center;box-shadow:var(--shadow);}
+.snum{font-size:28px;font-weight:900;letter-spacing:-.03em;line-height:1;}
+.slbl{font-size:11px;color:var(--ink3);margin-top:4px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;}
+
+/* Admin sub tabs */
+.atab-bar{display:flex;gap:0;margin-bottom:18px;border-bottom:1px solid var(--line);}
+.atab{padding:8px 16px;border:none;background:transparent;color:var(--ink3);font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:5px;transition:all .14s;font-family:inherit;}
+.atab svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.atab:hover{color:var(--ink);}
+.atab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:0 14px;height:36px;border-radius:var(--r);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;border:1px solid transparent;transition:all .13s;white-space:nowrap;}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.btn-primary:hover{background:var(--accent2);}
+.btn-ghost{background:#fff;color:var(--ink);border-color:var(--line2);}
+.btn-ghost:hover{background:var(--paper2);}
+.btn-danger{background:#fff;color:var(--red);border-color:var(--red-bdr);}
+.btn-danger:hover{background:var(--red-light);}
+.btn-excel{background:#fff;color:#1e5c30;border-color:#7ab88a;font-weight:700;}
+.btn-excel:hover{background:#f0f9f3;}
+
+/* 입실/퇴실 버튼 */
+.btn-in{height:28px;padding:0 11px;font-size:11px;font-weight:700;border-radius:6px;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap;}
+.btn-in:hover{background:var(--accent2);}
+.btn-out{height:28px;padding:0 11px;font-size:11px;font-weight:700;border-radius:6px;background:var(--purple);color:#fff;border:1px solid var(--purple);cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap;}
+.btn-out:hover{background:#360f6e;}
+.btn-cancel{height:24px;padding:0 8px;font-size:10px;font-weight:600;border-radius:5px;background:transparent;color:var(--red);border:1px solid var(--red-bdr);cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap;}
+.btn-cancel:hover{background:var(--red-light);}
+
+.btn-icon{width:28px;height:28px;padding:0;background:transparent;color:var(--ink3);border:1px solid transparent;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;font-family:inherit;}
+.btn-icon svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.btn-icon:hover{background:var(--paper2);border-color:var(--line);color:var(--ink);}
+.btn-icon.danger:hover{background:var(--red-light);border-color:var(--red-bdr);color:var(--red);}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-in{background:var(--green-light);color:var(--green);border:1px solid var(--green-bdr);}
+.badge-out{background:var(--purple-light);color:var(--purple);border:1px solid var(--purple-bdr);}
+.badge-none{background:var(--paper2);color:var(--ink3);border:1px solid var(--line);}
+
+/* Table */
+.twrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{padding:8px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--line);white-space:nowrap;background:var(--paper2);}
+td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:var(--paper2);}
+.mono{font-family:'DM Mono',monospace;font-size:12px;}
+.tbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.tbg{display:flex;gap:7px;flex-wrap:wrap;}
+
+/* Form */
+.fgroup{margin-bottom:12px;}
+.fgroup label{display:block;font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:5px;}
+.fld{width:100%;height:40px;padding:0 12px;border:1px solid var(--line2);border-radius:var(--r);background:#fff;color:var(--ink);font-size:13px;font-family:inherit;outline:none;transition:border-color .14s,box-shadow .14s;}
+.fld:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,92,56,.09);}
+.add-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;}
+
+/* Lock */
+.lock-shell{max-width:340px;margin:64px auto 0;text-align:center;}
+.lock-ico{width:60px;height:60px;background:var(--paper2);border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.lock-ico svg{width:26px;height:26px;stroke:var(--ink2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.lock-shell h2{font-size:18px;font-weight:700;margin-bottom:6px;}
+.lock-shell p{font-size:13px;color:var(--ink2);margin-bottom:20px;}
+.pw-row{display:flex;gap:8px;}
+.pw-row .fld{flex:1;}
+.hint{font-size:11px;color:var(--ink3);margin-top:10px;}
+
+/* Hint box */
+.hintbox{background:var(--blue-light);border:1px solid var(--blue-bdr);border-radius:var(--r);padding:11px 14px;font-size:12px;color:var(--blue);margin-bottom:14px;line-height:1.75;}
+
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(14,13,12,.5);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.modal-bg.open{display:flex;}
+.modal-box{background:#fff;border-radius:var(--r2);padding:26px;width:420px;max-width:92vw;box-shadow:var(--shadow2);animation:pIn .16s ease;}
+.modal-box h3{font-size:16px;font-weight:700;margin-bottom:4px;}
+.modal-msub{font-size:13px;color:var(--ink2);margin-bottom:20px;}
+.modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
+
+/* QR */
+.qr-wrap{text-align:center;padding:8px 0;}
+#qr-div{display:inline-block;padding:14px;background:#fff;border:1px solid var(--line);border-radius:var(--r2);margin-bottom:14px;}
+#qr-div img{display:block;}
+.qr-url-box{font-family:'DM Mono',monospace;font-size:11px;color:var(--ink2);word-break:break-all;background:var(--paper2);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:14px;text-align:left;}
+.qr-note{font-size:12px;color:var(--ink2);line-height:1.8;}
+
+/* Log tag */
+.ltag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;}
+.ltag-ok{background:var(--green-light);color:var(--green);}
+.ltag-out{background:var(--purple-light);color:var(--purple);}
+.ltag-ng{background:var(--red-light);color:var(--red);}
+.ltag-sys{background:var(--blue-light);color:var(--blue);}
+
+.empty-st{text-align:center;padding:32px;color:var(--ink3);font-size:13px;}
+.empty-st svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 auto 10px;opacity:.4;}
+footer{border-top:1px solid var(--line);text-align:center;padding:14px;font-size:11px;color:var(--ink3);background:#fff;}
+
+@media(max-width:800px){
+  .mlist-hdr,.mrow{grid-template-columns:36px 1fr 1fr 90px 130px 130px;}
+  /* 소속 컬럼 숨김 */
+  .mlist-hdr .hc-dept,.mrow .mc-dept{display:none;}
+  main{padding:16px 12px;}
+  .sgrid{grid-template-columns:repeat(2,1fr);}
+  header{padding:0 14px;}
+  .logo-text{font-size:13px;}
+  .hn span{display:none;}
+}
+@media(max-width:560px){
+  .mlist-hdr,.mrow{grid-template-columns:32px 1fr 80px 120px 120px;}
+  .mlist-hdr .hc-team,.mrow .mc-team{display:none;}
+  .prog-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    </div>
+    <div class="logo-text">S&amp;I 신임리더 팀빌딩 PI워크숍</div>
+  </div>
+  <nav class="hnav">
+    <button class="hn active" id="tab-ci" onclick="switchTab('ci')">
+      <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <span>출석체크</span>
+    </button>
+    <button class="hn" id="tab-adm" onclick="switchTab('adm')">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>관리자</span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════ 출석체크 페이지 ══════════ -->
+<div class="page active" id="page-ci">
+  <div class="ptitle">출석 체크</div>
+  <div class="psub">본인 이름을 찾아 <strong>입실</strong> / <strong>퇴실</strong> 버튼을 눌러주세요.</div>
+
+  <!-- 날짜 (고정: 2026년 6월 2일 화요일) -->
+  <div class="dstrip">
+    <div class="dtxt">2026년 6월 2일 (화)</div>
+    <div class="dtm" id="ci-time"></div>
+  </div>
+
+  <!-- 교육명 배너 (크게) -->
+  <div class="event-banner">
+    <div class="ev-label">교육 과정</div>
+    <div class="ev-title">S&amp;I 신임리더 팀빌딩 PI워크숍</div>
+  </div>
+
+  <div id="ci-ok" class="alert a-ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span id="ci-ok-msg"></span></div>
+  <div id="ci-ng" class="alert a-ng"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="ci-ng-msg"></span></div>
+
+  <!-- 진행률 카드 -->
+  <div class="prog-section">
+    <div class="prog-grid">
+      <div class="prog-card">
+        <div class="prog-card-title"><span class="dot dot-in"></span>입실 현황</div>
+        <div class="prog-top"><span>진행률</span><span id="prog-in-lbl">0 / 0명</span></div>
+        <div class="prog-track"><div class="prog-fill-in" id="prog-in-fill" style="width:0%"></div></div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-card-title"><span class="dot dot-out"></span>퇴실 현황</div>
+        <div class="prog-top"><span>진행률</span><span id="prog-out-lbl">0 / 0명</span></div>
+        <div class="prog-track"><div class="prog-fill-out" id="prog-out-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 필터 -->
+  <div class="fbar">
+    <select class="finp" id="ci-fg" onchange="renderCI()"><option value="">전체 총괄</option></select>
+    <select class="finp" id="ci-ft" onchange="renderCI()"><option value="">전체 팀</option></select>
+    <select class="finp" id="ci-fd" onchange="renderCI()"><option value="">전체 소속</option></select>
+    <input class="finp" type="text" id="ci-fn" placeholder="이름 검색…" oninput="renderCI()" style="width:140px;"/>
+  </div>
+
+  <div id="ci-list"></div>
+</div>
+
+<!-- ══════════ 관리자 페이지 ══════════ -->
+<div class="page" id="page-adm">
+  <div id="lock-screen">
+    <div class="lock-shell">
+      <div class="lock-ico"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <h2>관리자 인증</h2>
+      <p>관리자 비밀번호를 입력해주세요.</p>
+      <div class="pw-row">
+        <input class="fld" type="password" id="inp-pw" placeholder="비밀번호" onkeydown="if(event.key==='Enter')doLogin()"/>
+        <button class="btn btn-primary" onclick="doLogin()">입장</button>
+      </div>
+      <div class="hint">기본 비밀번호: 1234</div>
+    </div>
+  </div>
+
+  <div id="adm-body" style="display:none;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div class="ptitle">관리자 대시보드</div>
+        <div class="psub" style="margin-bottom:0">출석 현황 · 명단 관리 · QR 생성 · 이력 로그</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="openQR()">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/></svg>
+          QR 코드
+        </button>
+        <button class="btn btn-ghost" onclick="doLogout()">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          로그아웃
+        </button>
+      </div>
+    </div>
+
+    <!-- 서브 탭 -->
+    <div class="atab-bar">
+      <button class="atab active" id="atab-status" onclick="switchATab('status')">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        출석 현황
+      </button>
+      <button class="atab" id="atab-roster" onclick="switchATab('roster')">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        명단 관리
+      </button>
+      <button class="atab" id="atab-log" onclick="switchATab('log')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        이력 로그
+      </button>
+    </div>
+
+    <!-- 출석 현황 패널 -->
+    <div id="ap-status">
+      <div class="sgrid">
+        <div class="scard"><div class="snum" id="s-tot">0</div><div class="slbl">전체 인원</div></div>
+        <div class="scard"><div class="snum" id="s-in" style="color:var(--green)">0</div><div class="slbl">입실 완료</div></div>
+        <div class="scard"><div class="snum" id="s-out" style="color:var(--purple)">0</div><div class="slbl">퇴실 완료</div></div>
+        <div class="scard"><div class="snum" id="s-none" style="color:var(--red)">0</div><div class="slbl">미입실</div></div>
+      </div>
+      <div class="card">
+        <div class="tbar">
+          <div class="fbar" style="margin-bottom:0;">
+            <select class="finp" id="af-g" onchange="renderAttTbl()"><option value="">전체 총괄</option></select>
+            <select class="finp" id="af-t" onchange="renderAttTbl()"><option value="">전체 팀</option></select>
+            <select class="finp" id="af-d" onchange="renderAttTbl()"><option value="">전체 소속</option></select>
+            <select class="finp" id="af-s" onchange="renderAttTbl()">
+              <option value="">전체 상태</option>
+              <option value="in">입실완료</option>
+              <option value="out">퇴실완료</option>
+              <option value="none">미입실</option>
+            </select>
+            <input class="finp" type="text" id="af-n" placeholder="이름" oninput="renderAttTbl()" style="width:110px;"/>
+          </div>
+          <div class="tbg">
+            <button class="btn btn-excel" onclick="exportExcel()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              엑셀 내보내기
+            </button>
+          </div>
+        </div>
+        <div class="twrap">
+          <table>
+            <thead><tr><th>No.</th><th>총괄</th><th>팀</th><th>소속</th><th>이름</th><th>입실 상태</th><th>입실 시간</th><th>퇴실 상태</th><th>퇴실 시간</th><th>처리</th></tr></thead>
+            <tbody id="att-tbody"></tbody>
+          </table>
+        </div>
+        <div id="att-empty" class="empty-st" style="display:none;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>조회 결과 없음</div>
+      </div>
+    </div>
+
+    <!-- 명단 관리 패널 -->
+    <div id="ap-roster" style="display:none;">
+      <div class="hintbox">명단 변경사항은 출석체크 페이지에 즉시 반영됩니다.</div>
+      <div class="card">
+        <div class="clabel">새 인원 추가</div>
+        <div class="add-grid">
+          <div class="fgroup" style="margin-bottom:0;"><label>총괄</label><input class="fld" type="text" id="add-g" placeholder="예: 경영본부" list="dl-g"/><datalist id="dl-g"></datalist></div>
+          <div class="fgroup" style="margin-bottom:0;"><label>팀</label><input class="fld" type="text" id="add-t" placeholder="예: 인사팀" list="dl-t"/><datalist id="dl-t"></datalist></div>
+          <div class="fgroup" style="margin-bottom:0;"><label>소속</label><input class="fld" type="text" id="add-d" placeholder="예: 인사기획파트" list="dl-d"/><datalist id="dl-d"></datalist></div>
+          <div class="fgroup" style="margin-bottom:0;"><label>성명</label><input class="fld" type="text" id="add-n" placeholder="이름" onkeydown="if(event.key==='Enter')addMember()"/></div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-primary" onclick="addMember()" style="height:40px;margin-top:17px;">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>추가
+            </button>
+          </div>
+        </div>
+        <div id="add-alert" class="alert" style="margin-top:12px;margin-bottom:0;"></div>
+      </div>
+      <div class="card">
+        <div class="tbar">
+          <div class="fbar" style="margin-bottom:0;">
+            <select class="finp" id="rf-g" onchange="renderRoster()"><option value="">전체 총괄</option></select>
+            <select class="finp" id="rf-t" onchange="renderRoster()"><option value="">전체 팀</option></select>
+            <input class="finp" type="text" id="rf-n" placeholder="이름 검색" oninput="renderRoster()" style="width:120px;"/>
+          </div>
+          <div class="tbg">
+            <button class="btn btn-ghost" onclick="exportRoster()">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>명단 엑셀
+            </button>
+            <button class="btn btn-danger" onclick="clearRoster()">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>전체 삭제
+            </button>
+          </div>
+        </div>
+        <div id="roster-cnt" style="font-size:12px;color:var(--ink3);margin-bottom:10px;font-weight:600;"></div>
+        <div class="twrap">
+          <table>
+            <thead><tr><th>No.</th><th>총괄</th><th>팀</th><th>소속</th><th>이름</th><th>입실</th><th>퇴실</th><th>수정</th><th>삭제</th></tr></thead>
+            <tbody id="roster-tbody"></tbody>
+          </table>
+        </div>
+        <div id="roster-empty" class="empty-st" style="display:none;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>등록된 인원 없음</div>
+      </div>
+    </div>
+
+    <!-- 이력 로그 패널 -->
+    <div id="ap-log" style="display:none;">
+      <div class="card">
+        <div class="tbar">
+          <span style="font-size:13px;color:var(--ink2);">최근 300건</span>
+          <button class="btn btn-danger" onclick="clearLogs()">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>초기화
+          </button>
+        </div>
+        <div class="twrap">
+          <table>
+            <thead><tr><th>일시</th><th>총괄</th><th>팀</th><th>소속</th><th>이름</th><th>구분</th><th>처리자</th></tr></thead>
+            <tbody id="log-tbody"></tbody>
+          </table>
+        </div>
+        <div id="log-empty" class="empty-st" style="display:none;"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>이력 없음</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- 수정 모달 -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal-box">
+    <h3>인원 정보 수정</h3>
+    <div class="modal-msub">정보를 수정한 뒤 저장하세요.</div>
+    <input type="hidden" id="edit-id"/>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="fgroup"><label>총괄</label><input class="fld" type="text" id="edit-g" list="dl-g"/></div>
+      <div class="fgroup"><label>팀</label><input class="fld" type="text" id="edit-t" list="dl-t"/></div>
+      <div class="fgroup"><label>소속</label><input class="fld" type="text" id="edit-d" list="dl-d"/></div>
+      <div class="fgroup"><label>성명</label><input class="fld" type="text" id="edit-n" onkeydown="if(event.key==='Enter')saveEdit()"/></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('edit-modal')">취소</button>
+      <button class="btn btn-primary" onclick="saveEdit()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- QR 모달 -->
+<div class="modal-bg" id="qr-modal">
+  <div class="modal-box" style="width:440px;">
+    <h3>QR 코드 — 출석체크 페이지 연결</h3>
+    <div class="modal-msub">교육생이 QR을 스캔하면 출석체크 화면으로 바로 이동합니다.</div>
+    <div class="qr-wrap">
+      <div id="qr-div"></div>
+      <div class="qr-url-box" id="qr-url-txt"></div>
+      <div class="qr-note" id="qr-note"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('qr-modal')">닫기</button>
+      <button class="btn btn-primary" onclick="printQR()">인쇄</button>
+    </div>
+  </div>
+</div>
+
+<footer>S&amp;I 신임리더 팀빌딩 PI워크숍 &nbsp;·&nbsp; 출석 관리 시스템</footer>
+
+<script>
+// ════════════════════════════════════════
+// Storage  (att 구조: {id: {in:{time,date}, out:{time,date}}})
+// ════════════════════════════════════════
+const SK={r:'si_r1',a:'si_a1',l:'si_l1'};
+const PW='1234';
+
+function ld(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function getRoster(){return ld(SK.r)||[];}
+function getAtt(){return ld(SK.a)||{};}
+function getLogs(){return ld(SK.l)||[];}
+function nextId(arr){return arr.length?Math.max(...arr.map(r=>r.id))+1:1;}
+
+function addLog(action,m,actor){
+  const logs=getLogs(),d=new Date();
+  logs.unshift({
+    ts:d.toLocaleDateString('ko-KR',{month:'2-digit',day:'2-digit'})+' '+
+       d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+    grp:m.grp||'',team:m.team||'',dept:m.dept||'',name:m.name,action,actor:actor||'본인'
+  });
+  if(logs.length>300)logs.splice(300);
+  sv(SK.l,logs);
+}
+
+// ── Time ──────────────────────────────
+function nowTime(){return new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function todayStr(){return '2026-06-02';} // 고정 날짜
+function updateClock(){const el=document.getElementById('ci-time');if(el)el.textContent=nowTime();}
+
+// ── Alerts ────────────────────────────
+let _at=null;
+function ciAlert(type,msg){
+  ['ci-ok','ci-ng'].forEach(i=>document.getElementById(i).classList.remove('show'));
+  if(_at)clearTimeout(_at);
+  const id=type==='ok'?'ci-ok':'ci-ng';
+  document.getElementById(type==='ok'?'ci-ok-msg':'ci-ng-msg').textContent=msg;
+  document.getElementById(id).classList.add('show');
+  _at=setTimeout(()=>document.getElementById(id).classList.remove('show'),3800);
+}
+function addAlert(type,msg){
+  const el=document.getElementById('add-alert');
+  el.className=`alert a-${type} show`;el.textContent=msg;
+  setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+// ── Tab switch ────────────────────────
+function switchTab(tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.hn[id^=tab]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='adm'&&adminIn)renderAdmin();
+}
+let curATab='status';
+function switchATab(t){
+  ['status','roster','log'].forEach(s=>{
+    document.getElementById('ap-'+s).style.display=s===t?'block':'none';
+    document.getElementById('atab-'+s).classList.toggle('active',s===t);
+  });
+  curATab=t;
+  if(t==='roster')renderRoster();
+  if(t==='log')renderLog();
+}
+
+// ── Dropdowns ─────────────────────────
+function uniq(arr,key){return [...new Set(arr.map(r=>r[key]).filter(Boolean))].sort();}
+function refreshDropdowns(){
+  const r=getRoster();
+  const grps=uniq(r,'grp'),teams=uniq(r,'team'),depts=uniq(r,'dept');
+  document.getElementById('dl-g').innerHTML=grps.map(v=>`<option value="${v}">`).join('');
+  document.getElementById('dl-t').innerHTML=teams.map(v=>`<option value="${v}">`).join('');
+  document.getElementById('dl-d').innerHTML=depts.map(v=>`<option value="${v}">`).join('');
+  syncSel('ci-fg',grps,'전체 총괄');syncSel('ci-ft',teams,'전체 팀');syncSel('ci-fd',depts,'전체 소속');
+  syncSel('af-g',grps,'전체 총괄');syncSel('af-t',teams,'전체 팀');syncSel('af-d',depts,'전체 소속');
+  syncSel('rf-g',grps,'전체 총괄');syncSel('rf-t',teams,'전체 팀');
+}
+function syncSel(id,vals,ph){
+  const sel=document.getElementById(id);if(!sel)return;
+  const prev=sel.value;
+  sel.innerHTML=`<option value="">${ph}</option>`+vals.map(v=>`<option value="${v}"${v===prev?' selected':''}>${v}</option>`).join('');
+}
+
+// ── Checkin page ──────────────────────
+function renderCI(){
+  const roster=getRoster(),att=getAtt();
+  const fg=document.getElementById('ci-fg').value;
+  const ft=document.getElementById('ci-ft').value;
+  const fd=document.getElementById('ci-fd').value;
+  const fn=document.getElementById('ci-fn').value.trim();
+
+  // progress
+  let inCnt=0,outCnt=0;
+  roster.forEach(m=>{const r=att[m.id];if(r&&r.in)inCnt++;if(r&&r.out)outCnt++;});
+  const tot=roster.length;
+  document.getElementById('prog-in-lbl').textContent=`${inCnt} / ${tot}명`;
+  document.getElementById('prog-out-lbl').textContent=`${outCnt} / ${tot}명`;
+  document.getElementById('prog-in-fill').style.width=tot?Math.round(inCnt/tot*100)+'%':'0%';
+  document.getElementById('prog-out-fill').style.width=tot?Math.round(outCnt/tot*100)+'%':'0%';
+
+  let list=roster;
+  if(fg)list=list.filter(r=>r.grp===fg);
+  if(ft)list=list.filter(r=>r.team===ft);
+  if(fd)list=list.filter(r=>r.dept===fd);
+  if(fn)list=list.filter(r=>r.name.includes(fn));
+
+  const wrap=document.getElementById('ci-list');
+  if(!list.length){
+    wrap.innerHTML='<div class="empty-st"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>검색 결과가 없습니다</div>';
+    return;
+  }
+
+  let html=`<div class="mlist-hdr">
+    <span style="font-size:11px;font-weight:700;color:var(--ink3);">No.</span>
+    <span class="hc-grp" style="font-size:11px;font-weight:700;color:var(--ink3);">총괄</span>
+    <span class="hc-team" style="font-size:11px;font-weight:700;color:var(--ink3);">팀</span>
+    <span class="hc-dept" style="font-size:11px;font-weight:700;color:var(--ink3);">소속</span>
+    <span style="font-size:11px;font-weight:700;color:var(--ink3);">성명</span>
+    <span style="font-size:11px;font-weight:700;color:var(--green);text-align:center;">🟢 입실</span>
+    <span style="font-size:11px;font-weight:700;color:var(--purple);text-align:center;">🟣 퇴실</span>
+  </div><div class="mlist">`;
+
+  list.forEach((m,i)=>{
+    const rec=att[m.id]||{};
+    const hasIn=!!rec.in, hasOut=!!rec.out;
+    const rowCls=hasIn&&hasOut?'all-done':hasIn?'in-done':'';
+
+    html+=`<div class="mrow ${rowCls}" id="mr-${m.id}">
+      <span class="mcell num">${i+1}</span>
+      <span class="mcell mc-grp">${m.grp||'—'}</span>
+      <span class="mcell mc-team">${m.team||'—'}</span>
+      <span class="mcell mc-dept">${m.dept||'—'}</span>
+      <span class="mcell mname">${m.name}</span>
+      <span class="mcell" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;">
+        ${hasIn
+          ? `<span class="check-time-in">✓ ${rec.in.time}</span>
+             <button class="btn-cancel" onclick="doCancelIn(${m.id})">취소</button>`
+          : `<button class="btn-in" onclick="doCheckIn(${m.id})">입실 체크</button>`
+        }
+      </span>
+      <span class="mcell" style="display:flex;flex-direction:column;align-items:flex-start;gap:3px;">
+        ${hasOut
+          ? `<span class="check-time-out">✓ ${rec.out.time}</span>
+             <button class="btn-cancel" onclick="doCancelOut(${m.id})">취소</button>`
+          : hasIn
+            ? `<button class="btn-out" onclick="doCheckOut(${m.id})">퇴실 체크</button>`
+            : `<span style="font-size:11px;color:var(--ink3);">입실 후 가능</span>`
+        }
+      </span>
+    </div>`;
+  });
+  html+='</div>';
+  wrap.innerHTML=html;
+}
+
+// 입실
+function doCheckIn(id){
+  const m=getRoster().find(r=>r.id===id);if(!m)return;
+  const att=getAtt();
+  if(!att[id])att[id]={};
+  att[id].in={time:nowTime(),date:todayStr()};
+  sv(SK.a,att);
+  addLog('입실체크',m,'본인');
+  ciAlert('ok',`✓ ${m.name}님 입실이 등록되었습니다. (${att[id].in.time})`);
+  renderCI();
+}
+// 입실 취소
+function doCancelIn(id){
+  const m=getRoster().find(r=>r.id===id);if(!m)return;
+  if(!confirm(`${m.name}님의 입실 기록을 취소하시겠습니까?`))return;
+  const att=getAtt();
+  if(att[id]){delete att[id].in; if(!att[id].out)delete att[id];}
+  sv(SK.a,att);
+  addLog('입실취소',m,'본인');
+  ciAlert('ng',`${m.name}님 입실이 취소되었습니다.`);
+  renderCI();
+}
+// 퇴실
+function doCheckOut(id){
+  const m=getRoster().find(r=>r.id===id);if(!m)return;
+  const att=getAtt();
+  if(!att[id]||!att[id].in){ciAlert('ng','입실 체크 후 퇴실 체크가 가능합니다.');return;}
+  att[id].out={time:nowTime(),date:todayStr()};
+  sv(SK.a,att);
+  addLog('퇴실체크',m,'본인');
+  ciAlert('ok',`✓ ${m.name}님 퇴실이 등록되었습니다. (${att[id].out.time})`);
+  renderCI();
+}
+// 퇴실 취소
+function doCancelOut(id){
+  const m=getRoster().find(r=>r.id===id);if(!m)return;
+  if(!confirm(`${m.name}님의 퇴실 기록을 취소하시겠습니까?`))return;
+  const att=getAtt();
+  if(att[id])delete att[id].out;
+  sv(SK.a,att);
+  addLog('퇴실취소',m,'본인');
+  ciAlert('ng',`${m.name}님 퇴실이 취소되었습니다.`);
+  renderCI();
+}
+
+// ── Admin auth ────────────────────────
+let adminIn=false;
+function doLogin(){
+  if(document.getElementById('inp-pw').value===PW){
+    adminIn=true;
+    document.getElementById('lock-screen').style.display='none';
+    document.getElementById('adm-body').style.display='block';
+    renderAdmin();
+  } else {
+    const i=document.getElementById('inp-pw');i.value='';
+    i.placeholder='비밀번호가 틀렸습니다';
+    setTimeout(()=>{i.placeholder='비밀번호';},1800);
+  }
+}
+function doLogout(){
+  adminIn=false;
+  document.getElementById('lock-screen').style.display='block';
+  document.getElementById('adm-body').style.display='none';
+  document.getElementById('inp-pw').value='';
+}
+
+// ── Admin render ──────────────────────
+function renderAdmin(){
+  const r=getRoster(),att=getAtt();
+  let inCnt=0,outCnt=0;
+  r.forEach(m=>{const rec=att[m.id];if(rec&&rec.in)inCnt++;if(rec&&rec.out)outCnt++;});
+  document.getElementById('s-tot').textContent=r.length;
+  document.getElementById('s-in').textContent=inCnt;
+  document.getElementById('s-out').textContent=outCnt;
+  document.getElementById('s-none').textContent=r.length-inCnt;
+  refreshDropdowns();
+  if(curATab==='status')renderAttTbl();
+  if(curATab==='roster')renderRoster();
+  if(curATab==='log')renderLog();
+}
+
+// ── Admin 출석 현황 테이블 ─────────────
+function renderAttTbl(){
+  const roster=getRoster(),att=getAtt();
+  const fg=document.getElementById('af-g').value;
+  const ft=document.getElementById('af-t').value;
+  const fd=document.getElementById('af-d').value;
+  const fs=document.getElementById('af-s').value;
+  const fn=document.getElementById('af-n').value.trim();
+  let list=roster.filter(r=>{
+    if(fg&&r.grp!==fg)return false;
+    if(ft&&r.team!==ft)return false;
+    if(fd&&r.dept!==fd)return false;
+    if(fn&&!r.name.includes(fn))return false;
+    const rec=att[r.id];
+    if(fs==='in'&&!(rec&&rec.in))return false;
+    if(fs==='out'&&!(rec&&rec.out))return false;
+    if(fs==='none'&&rec&&rec.in)return false;
+    return true;
+  });
+  const tbody=document.getElementById('att-tbody');
+  const empty=document.getElementById('att-empty');
+  if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=list.map((r,i)=>{
+    const rec=att[r.id]||{};
+    const hasIn=!!(rec.in),hasOut=!!(rec.out);
+    return `<tr>
+      <td class="mono" style="color:var(--ink3);">${i+1}</td>
+      <td>${r.grp||'—'}</td><td>${r.team||'—'}</td><td>${r.dept||'—'}</td>
+      <td style="font-weight:700;">${r.name}</td>
+      <td>${hasIn?'<span class="badge badge-in">✓ 입실</span>':'<span class="badge badge-none">미입실</span>'}</td>
+      <td class="mono">${rec.in?rec.in.time:'—'}</td>
+      <td>${hasOut?'<span class="badge badge-out">✓ 퇴실</span>':'<span class="badge badge-none">미퇴실</span>'}</td>
+      <td class="mono">${rec.out?rec.out.time:'—'}</td>
+      <td>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;">
+          ${hasIn
+            ?`<button class="btn btn-danger" style="height:26px;padding:0 8px;font-size:11px;" onclick="admCancelIn(${r.id})">입실취소</button>`
+            :`<button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:11px;" onclick="admCheckIn(${r.id})">입실처리</button>`
+          }
+          ${hasOut
+            ?`<button class="btn btn-danger" style="height:26px;padding:0 8px;font-size:11px;border-color:var(--purple-bdr);color:var(--purple);" onclick="admCancelOut(${r.id})">퇴실취소</button>`
+            :hasIn
+              ?`<button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:11px;" onclick="admCheckOut(${r.id})">퇴실처리</button>`
+              :''
+          }
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function admCheckIn(id){
+  const m=getRoster().find(r=>r.id===id);
+  if(!confirm(`${m.name}님을 입실 처리하시겠습니까?`))return;
+  const att=getAtt();if(!att[id])att[id]={};
+  att[id].in={time:nowTime(),date:todayStr()};sv(SK.a,att);
+  addLog('입실처리(관리자)',m,'관리자');renderAdmin();renderCI();
+}
+function admCancelIn(id){
+  const m=getRoster().find(r=>r.id===id);
+  if(!confirm(`${m.name}님의 입실을 취소(원복)하시겠습니까?`))return;
+  const att=getAtt();
+  if(att[id]){delete att[id].in;if(!att[id].out)delete att[id];}
+  sv(SK.a,att);addLog('입실취소(관리자)',m,'관리자');renderAdmin();renderCI();
+}
+function admCheckOut(id){
+  const m=getRoster().find(r=>r.id===id);
+  if(!confirm(`${m.name}님을 퇴실 처리하시겠습니까?`))return;
+  const att=getAtt();if(!att[id])att[id]={};
+  att[id].out={time:nowTime(),date:todayStr()};sv(SK.a,att);
+  addLog('퇴실처리(관리자)',m,'관리자');renderAdmin();renderCI();
+}
+function admCancelOut(id){
+  const m=getRoster().find(r=>r.id===id);
+  if(!confirm(`${m.name}님의 퇴실을 취소(원복)하시겠습니까?`))return;
+  const att=getAtt();if(att[id])delete att[id].out;
+  sv(SK.a,att);addLog('퇴실취소(관리자)',m,'관리자');renderAdmin();renderCI();
+}
+
+// ── Roster ────────────────────────────
+function renderRoster(){
+  const roster=getRoster(),att=getAtt();
+  const fg=document.getElementById('rf-g').value;
+  const ft=document.getElementById('rf-t').value;
+  const fn=document.getElementById('rf-n').value.trim();
+  let list=roster.filter(r=>{
+    if(fg&&r.grp!==fg)return false;
+    if(ft&&r.team!==ft)return false;
+    if(fn&&!r.name.includes(fn))return false;
+    return true;
+  });
+  document.getElementById('roster-cnt').textContent=`총 ${roster.length}명 등록 (표시: ${list.length}명)`;
+  const tbody=document.getElementById('roster-tbody');
+  const empty=document.getElementById('roster-empty');
+  if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=list.map((r,i)=>{
+    const rec=att[r.id]||{};
+    return `<tr>
+      <td class="mono" style="color:var(--ink3);">${i+1}</td>
+      <td>${r.grp||'—'}</td><td>${r.team||'—'}</td><td>${r.dept||'—'}</td>
+      <td style="font-weight:700;">${r.name}</td>
+      <td>${rec.in?'<span class="badge badge-in">입실</span>':'<span class="badge badge-none">—</span>'}</td>
+      <td>${rec.out?'<span class="badge badge-out">퇴실</span>':'<span class="badge badge-none">—</span>'}</td>
+      <td><button class="btn-icon" onclick="openEdit(${r.id})" title="수정">
+        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button></td>
+      <td><button class="btn-icon danger" onclick="delMember(${r.id})" title="삭제">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+      </button></td>
+    </tr>`;
+  }).join('');
+}
+
+function addMember(){
+  const g=document.getElementById('add-g').value.trim();
+  const t=document.getElementById('add-t').value.trim();
+  const d=document.getElementById('add-d').value.trim();
+  const n=document.getElementById('add-n').value.trim();
+  if(!n){addAlert('ng','성명을 입력해주세요.');return;}
+  const roster=getRoster();
+  if(roster.find(r=>r.grp===g&&r.team===t&&r.dept===d&&r.name===n)){
+    addAlert('ng','이미 동일한 인원이 등록되어 있습니다.');return;
+  }
+  roster.push({id:nextId(roster),grp:g,team:t,dept:d,name:n});
+  sv(SK.r,roster);
+  document.getElementById('add-n').value='';
+  addLog('명단추가',{grp:g,team:t,dept:d,name:n},'관리자');
+  renderAdmin();refreshDropdowns();renderCI();
+  addAlert('ok',`${n}님이 추가되었습니다.`);
+}
+function delMember(id){
+  const m=getRoster().find(r=>r.id===id);
+  if(!confirm(`${m.name}님을 삭제하시겠습니까?`))return;
+  sv(SK.r,getRoster().filter(r=>r.id!==id));
+  addLog('명단삭제',m,'관리자');renderAdmin();refreshDropdowns();renderCI();
+}
+function clearRoster(){
+  if(!confirm('전체 명단을 삭제하시겠습니까?'))return;
+  sv(SK.r,[]);renderAdmin();refreshDropdowns();renderCI();
+}
+function openEdit(id){
+  const m=getRoster().find(r=>r.id===id);if(!m)return;
+  document.getElementById('edit-id').value=id;
+  document.getElementById('edit-g').value=m.grp||'';
+  document.getElementById('edit-t').value=m.team||'';
+  document.getElementById('edit-d').value=m.dept||'';
+  document.getElementById('edit-n').value=m.name;
+  document.getElementById('edit-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('edit-n').focus(),80);
+}
+function saveEdit(){
+  const id=parseInt(document.getElementById('edit-id').value);
+  const g=document.getElementById('edit-g').value.trim();
+  const t=document.getElementById('edit-t').value.trim();
+  const d=document.getElementById('edit-d').value.trim();
+  const n=document.getElementById('edit-n').value.trim();
+  if(!n){alert('성명을 입력해주세요.');return;}
+  const roster=getRoster(),idx=roster.findIndex(r=>r.id===id);if(idx<0)return;
+  const old={...roster[idx]};
+  roster[idx]={...roster[idx],grp:g,team:t,dept:d,name:n};
+  sv(SK.r,roster);
+  addLog(`수정(${old.name}→${n})`,roster[idx],'관리자');
+  closeModal('edit-modal');renderAdmin();refreshDropdowns();renderCI();
+}
+
+// ── Log ───────────────────────────────
+function renderLog(){
+  const logs=getLogs();
+  const tbody=document.getElementById('log-tbody');
+  const empty=document.getElementById('log-empty');
+  if(!logs.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=logs.map(l=>{
+    const isIn=l.action.includes('입실')&&!l.action.includes('취소');
+    const isOut=l.action.includes('퇴실')&&!l.action.includes('취소');
+    const isNeg=l.action.includes('취소')||l.action.includes('삭제');
+    const isSys=l.action.includes('관리자')||l.action.includes('추가')||l.action.includes('수정');
+    const cls=isNeg?'ltag-ng':isOut?'ltag-out':isSys?'ltag-sys':'ltag-ok';
+    return `<tr>
+      <td class="mono" style="font-size:12px;color:var(--ink3);">${l.ts}</td>
+      <td>${l.grp||'—'}</td><td>${l.team||'—'}</td><td>${l.dept||'—'}</td>
+      <td style="font-weight:700;">${l.name}</td>
+      <td><span class="ltag ${cls}">${l.action}</span></td>
+      <td style="color:var(--ink3);">${l.actor}</td>
+    </tr>`;
+  }).join('');
+}
+function clearLogs(){if(!confirm('이력 로그를 전체 삭제하시겠습니까?'))return;sv(SK.l,[]);renderLog();}
+
+// ── Excel ─────────────────────────────
+function exportExcel(){
+  const roster=getRoster(),att=getAtt();
+  const fg=document.getElementById('af-g').value;
+  const ft=document.getElementById('af-t').value;
+  const fd=document.getElementById('af-d').value;
+  const fs=document.getElementById('af-s').value;
+  const fn=document.getElementById('af-n').value.trim();
+  let list=roster.filter(r=>{
+    if(fg&&r.grp!==fg)return false;
+    if(ft&&r.team!==ft)return false;
+    if(fd&&r.dept!==fd)return false;
+    if(fn&&!r.name.includes(fn))return false;
+    const rec=att[r.id];
+    if(fs==='in'&&!(rec&&rec.in))return false;
+    if(fs==='out'&&!(rec&&rec.out))return false;
+    if(fs==='none'&&rec&&rec.in)return false;
+    return true;
+  });
+  if(!list.length){alert('내보낼 데이터가 없습니다.');return;}
+  const data=[['번호','총괄','팀','소속','이름','입실 상태','입실 시간','퇴실 상태','퇴실 시간'],
+    ...list.map((r,i)=>{
+      const rec=att[r.id]||{};
+      return[i+1,r.grp||'',r.team||'',r.dept||'',r.name,
+        rec.in?'입실':'미입실',rec.in?rec.in.time:'',
+        rec.out?'퇴실':'미퇴실',rec.out?rec.out.time:''];
+    })];
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:6},{wch:14},{wch:14},{wch:16},{wch:12},{wch:10},{wch:12},{wch:10},{wch:12}];
+  XLSX.utils.book_append_sheet(wb,ws,'출석부');
+  XLSX.writeFile(wb,'SI_워크숍_출석부.xlsx');
+}
+function exportRoster(){
+  const roster=getRoster(),att=getAtt();
+  if(!roster.length){alert('명단이 없습니다.');return;}
+  const data=[['번호','총괄','팀','소속','이름','입실','퇴실'],
+    ...roster.map((r,i)=>{const rec=att[r.id]||{};return[i+1,r.grp||'',r.team||'',r.dept||'',r.name,rec.in?'O':'',rec.out?'O':''];})];
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:6},{wch:14},{wch:14},{wch:16},{wch:12},{wch:8},{wch:8}];
+  XLSX.utils.book_append_sheet(wb,ws,'명단');
+  XLSX.writeFile(wb,'SI_워크숍_명단.xlsx');
+}
+
+// ── QR ────────────────────────────────
+function openQR(){
+  const url=window.location.href;
+  const isLocal=url.startsWith('file://');
+  document.getElementById('qr-url-txt').textContent=url;
+  const note=document.getElementById('qr-note');
+  note.innerHTML=isLocal
+    ?`⚠️ <strong>현재 로컬 파일로 실행 중입니다.</strong><br>QR 스캔으로 스마트폰 접속이 불가합니다.<br><br>
+      <strong>QR 사용법:</strong> 이 파일을 웹서버(인트라넷/GitHub Pages/Netlify 등)에 업로드 후 해당 URL로 접속하면 QR이 작동합니다.`
+    :`✅ <strong>웹서버 환경입니다.</strong> QR을 스캔하면 출석체크 화면으로 바로 이동합니다.`;
+  const div=document.getElementById('qr-div');
+  div.innerHTML='';
+  const img=document.createElement('img');
+  img.src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}&ecc=M`;
+  img.width=200;img.height=200;img.alt='QR 코드';img.style.display='block';
+  img.onerror=()=>{div.innerHTML='<div style="width:200px;height:200px;display:flex;align-items:center;justify-content:center;background:var(--paper2);border-radius:var(--r);font-size:12px;color:var(--ink3);text-align:center;padding:16px;">QR 로드 실패<br>인터넷 연결 확인</div>';};
+  div.appendChild(img);
+  document.getElementById('qr-modal').classList.add('open');
+}
+function printQR(){
+  const img=document.querySelector('#qr-div img');if(!img){alert('QR 이미지가 없습니다.');return;}
+  const url=document.getElementById('qr-url-txt').textContent;
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>출석체크 QR</title>
+  <style>body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;gap:14px;padding:40px;}
+  h2{font-size:18px;font-weight:700;}img{border:1px solid #ddd;padding:12px;border-radius:8px;}
+  p{font-size:11px;color:#888;word-break:break-all;max-width:280px;text-align:center;}</style>
+  </head><body><h2>S&amp;I 신임리더 팀빌딩 PI워크숍</h2>
+  <h3 style="font-size:14px;font-weight:500;color:#555;">출석체크 QR</h3>
+  <img src="${img.src}" width="220" height="220"/>
+  <p>${url}</p>
+  <script>window.onload=()=>{setTimeout(()=>window.print(),500);}<\/script>
+  </body></html>`);
+  w.document.close();
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});
+});
+
+// ── Init ──────────────────────────────
+updateClock();
+setInterval(updateClock,1000);
+refreshDropdowns();
+renderCI();
+</script>
+</body>
+</html>
